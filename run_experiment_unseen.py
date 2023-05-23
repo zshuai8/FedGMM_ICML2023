@@ -132,9 +132,9 @@ def run_experiment(args_):
         aggregator_type = 'decentralized'
     else:
         aggregator_type = AGGREGATOR_TYPE[args_.method]
-    # global_learners_ensemble.load_state('/home/zshuai8/fed_learning/FedGMM/saves/cifar100/fedgmm_01_48/global_ensemble.pt')
+    # global_learners_ensemble.load_state('./saves/cifar100/fedgmm_01_48/global_ensemble.pt')
     # global_learners_ensemble.load_state(
-        # '/home/zshuai8/fed_learning/FedGMM/saves/cifar10/fedgmm/global_ensemble.pt')
+        # './saves/cifar10/fedgmm/global_ensemble.pt')
     aggregator =\
         get_aggregator(
             aggregator_type=aggregator_type,
