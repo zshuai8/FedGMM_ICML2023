@@ -160,14 +160,14 @@ def run_experiment(args_):
     # ensemble.load_state('saves/mnist9/FedGMM_ds_3_3_32_003/global_ensemble.pt')
 
     dataset = MNIST9()
-    dir_path = '/home/zshuai8/fed_learning/FedGMM/saves/femnist_ood/FedEM_dist_shift_lr_003_gc_3_emb_48_ood/'
+    dir_path = './saves/femnist_ood/FedEM_dist_shift_lr_003_gc_3_emb_48_ood/'
     for learner_id, learner in enumerate(ensemble):
         chkpts_path = os.path.join(dir_path, f"chkpts_{learner_id}.pt")
         learner.model.load_state_dict(torch.load(chkpts_path))
 
     import numpy as np
     weights = np.load(
-        '/home/zshuai8/fed_learning/FedGMM/saves/femnist_ood/FedEM_dist_shift_lr_003_gc_3_emb_48_ood/train_client_weights.npy')
+        './saves/femnist_ood/FedEM_dist_shift_lr_003_gc_3_emb_48_ood/train_client_weights.npy')
     avg_weights = np.mean(weights, axis=0)
     ensemble.learners_weights = avg_weights
     # dic = dict()
