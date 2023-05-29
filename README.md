@@ -143,7 +143,7 @@ python run_experiment.py cifar10 FedEM --n_learners 3 --n_rounds 201 --bz 128 --
  --lr_scheduler multi_step --log_freq 10 --device cuda --optimizer sgd --seed 1234 --verbose 1
  
 # run FedGMM
-echo "Run FedEM"
+echo "Run FedGMM"
 python run_experiment.py cifar10 FedGMM --n_learners 3 --n_gmm 3 --n_rounds 201 --bz 128 --lr 0.03 \
  --lr_scheduler multi_step --log_freq 10 --device cuda --optimizer sgd --seed 1234 --verbose 1
 ```
