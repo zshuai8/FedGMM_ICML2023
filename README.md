@@ -148,6 +148,15 @@ python run_experiment.py cifar10 FedGMM --n_learners 3 --n_gmm 3 --n_rounds 201 
  --lr_scheduler multi_step --log_freq 10 --device cuda --optimizer sgd --seed 1234 --verbose 1
 ```
 
-Similar for other datasets are provided in `papers_experiments/`
-
+<!-- Similar for other datasets are provided in `papers_experiments/` -->
+## Reference
+Please consider cite our paper
+```
+@article{zhangICMLFedGMM,
+  title={Personalized Federated Learning under Mixture of Distributions},
+  author={Wu, Yue and Zhang, Shuaicheng and Yu, Wenchao and Liu, Yanchi and Gu, Quanquan and Zhou, Dawei and Chen, Haifeng and Cheng, Wei},
+  booktitle={International Conference on Machine Learning (ICML'23)},
+  year={2023}
+}
+```
 
