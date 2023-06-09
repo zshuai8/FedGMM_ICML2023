@@ -150,7 +150,6 @@ python run_experiment.py cifar10 FedGMM --n_learners 3 --n_gmm 3 --n_rounds 201 
 
 <!-- Similar for other datasets are provided in `papers_experiments/` -->
 ## Reference
-Please consider cite our paper
 ```
 @article{zhangICMLFedGMM,
   title={Personalized Federated Learning under Mixture of Distributions},
