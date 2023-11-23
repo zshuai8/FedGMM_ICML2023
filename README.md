@@ -64,6 +64,8 @@ The following table summarizes the datasets and models
 
 See the `README.md` files of respective dataset, i.e., `data/$DATASET`,
 for instructions on generating data
+## PCA projection
+The PCA projection file for each dataset can be retrieved by uncommenting lines 42-81 in the run_experiment.py file.
 
 ## Training
 
