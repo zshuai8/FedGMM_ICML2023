@@ -915,7 +915,7 @@ def get_emnist(dist_shift=False, dp=False):
             label_projection = torch.LongTensor(pickle.load(f2))
             emnist_targets[rotation_idx] = label_projection[emnist_targets[rotation_idx]]
     emnist_data = emnist_data / 255
-    emnist_data = d_norm(emnist_data)
+    # emnist_data = d_norm(emnist_data)
     return emnist_data, emnist_targets
 
 
@@ -1090,7 +1090,8 @@ def get_mnist9(dist_shift=False, dp=False, leave_out=True):
     else:
         idx = (emnist_targets == 1).nonzero().reshape([-1])
     print("using mnist9")
-    emnist_data = d_norm(emnist_data[idx]/255)
+    # emnist_data = d_norm(emnist_data[idx]/255)
+    emnist_data = emnist_data[idx]/255
     emnist_targets = emnist_targets[idx]
 
     return emnist_data, emnist_targets
@@ -1167,7 +1168,7 @@ def get_cifar10(dist_shift=False, dp=False, unseen=True):
             label_projection = torch.LongTensor(pickle.load(f2))
             cifar10_targets[rotation_idx] = label_projection[cifar10_targets[rotation_idx]]
     cifar10_data = cifar10_data / 255
-    cifar10_data = d_norm(cifar10_data)
+    # cifar10_data = d_norm(cifar10_data)
     return cifar10_data, cifar10_targets
 
 
@@ -1250,6 +1251,6 @@ def get_cifar100(dist_shift=False, dp=False, unseen=True):
             label_projection = torch.LongTensor(pickle.load(f2))
             cifar100_targets[rotation_idx] = label_projection[cifar100_targets[rotation_idx]]
     cifar100_data = cifar100_data / 255
-    cifar100_data = d_norm(cifar100_data)
+    # cifar100_data = d_norm(cifar100_data)
     # cifar100_data = cifar100_data.view(-1, 3, 32, 32)
     return cifar100_data, cifar100_targets
