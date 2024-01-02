@@ -103,83 +103,6 @@ class SubFEMNIST(Dataset):
         img = img.view(-1,1,28,28)
         return img, target, index
 
-# class SubFEMNIST(Dataset):
-#     """
-#     Constructs a subset of EMNIST dataset from a pickle file;
-#     expects pickle file to store list of indices
-#
-#     Attributes
-#     ----------
-#     indices: iterable of integers
-#     transform
-#     data
-#     targets
-#
-#     Methods
-#     -------
-#     __init__
-#     __len__
-#     __getitem__
-#     """
-#
-#     def __init__(self, path, emnist_data=None, emnist_targets=None, transform=None, rotation=True):
-#         """
-#         :param path: path to .pkl file; expected to store list of indices
-#         :param emnist_data: EMNIST dataset inputs
-#         :param emnist_targets: EMNIST dataset labels
-#         :param transform:
-#         """
-#         # with open(path, "rb") as f:
-#         #     self.indices = pickle.load(f)
-#         self.transform = Compose([
-#             ToTensor(),
-#             Normalize((0.1307,), (0.3081,))
-#         ])
-#
-#         self.data, self.targets = torch.load(path)
-#
-#
-# #         if emnist_data is None or emnist_targets is None:
-# #             self.data, self.targets = emnist_data, emnist_targets
-# #         else:
-#         # print(rotation)
-#         # raise
-# #         if rotation:
-# #             transform_image = T.Compose([
-# #                 T.ToPILImage(),
-# #                 T.RandomRotation(degrees=90),
-# #                 T.RandomInvert(1),
-# #                 T.RandomHorizontalFlip(1),
-# #                 T.ToTensor()
-# #             ])
-# #             with open('data/femnist/all_data/rotations.pkl', "rb") as f:
-# #                 rotation_idx = pickle.load(f)
-#
-# #                 x_trans = FEMNIST_T_Dataset(self.data, transform_image)
-# #                 transformed = DataLoader(x_trans, batch_size=len(rotation_idx))
-# #                 # Iterate over the batches in the DataLoader
-# #                 for batch in transformed:
-# #                     # The `batch` tensor will contain a single sample
-# #                     transformed_data = batch[0]
-# #                 transformed_data = transformed_data.to(torch.float64)
-# #                 self.data[rotation_idx] = transformed_data
-# #                 # self.data[rotation_idx] = transform_image(self.data[rotation_idx].view(b,1,w,h))
-# #                 with open('data/femnist/all_data/label_projection.pkl', "rb") as f2:
-# #                     label_projection = torch.LongTensor(pickle.load(f2))
-# #                     self.targets[rotation_idx] = label_projection[self.targets[rotation_idx]]
-#
-#     def __len__(self):
-#         return self.data.size(0)
-#
-#     def __getitem__(self, index):
-#         img, target = self.data[index], int(self.targets[index])
-#         img = np.uint8(img.numpy() * 255)
-#         img = Image.fromarray(img, mode='L')
-#
-#         if self.transform is not None:
-#             img = self.transform(img)
-#
-#         return img, target, index
 
 class SubFEMNIST(Dataset):
     """
@@ -718,136 +641,6 @@ def permute_label(targets, n_labels):
 
     return targets
 
-# def get_femnist(dist_shift=False, dp=False):
-#     """
-#     gets full (both train and test) EMNIST dataset inputs and labels;
-#     the dataset should be first downloaded (see data/emnist/README.md)
-#     :return:
-#         emnist_data, emnist_targets
-#     """
-#     if dist_shift:
-#         emnist_path = os.path.join("data", "femnist", "raw_data")
-#         emnist_path_aug = os.path.join("data", "emnist_aug", "raw_data")
-#     else:
-#         emnist_path = os.path.join("data", "femnist", "raw_data")
-#     assert os.path.isdir(emnist_path), "Download EMNIST dataset!!"
-#     # Define a transform that will be applied to the images
-#     d_transform = T.Compose([
-#         # Resize the images to a fixed size
-#         # T.ToPILImage(),
-#         # T.Grayscale(),
-#         # T.ColorJitter(brightness=.5, hue=.3),
-#         T.RandomRotation(degrees=90),
-#         T.RandomInvert(1),
-#         # # Randomly flip the images horizontally
-#         T.RandomHorizontalFlip(1),
-#         # Convert the images to tensors
-#         # T.Resize((-1, 28, 28)),
-#
-#         T.ToTensor()
-#     ])
-#     emnist_train = \
-#         EMNIST(
-#             root=emnist_path,
-#             split="byclass",
-#             download=True,
-#             transform=None,
-#             train=False
-#         )
-#     # subd = torch.utils.data.Subset(emnist_train, indices=torch.arange(10))
-#     emnist_transform_train = \
-#         EMNIST(
-#             root=emnist_path,
-#             split="byclass",
-#             train=True,
-#             transform=d_transform,
-#             download=False
-#         )
-#     emnist_test = \
-#         EMNIST(
-#             root=emnist_path,
-#             split="byclass",
-#             download=True,
-#             transform=T.ToTensor(),
-#             train=True
-#         )
-#     emnist_transform_test = \
-#         EMNIST(
-#             root=emnist_path_aug,
-#             split="byclass",
-#             train=False,
-#             transform=d_transform,
-#             download=False
-#         )
-#     emnist_transform_test.transform = d_transform
-#     emnist_data = \
-#         torch.cat([
-#             emnist_train.data,
-#             emnist_test.data
-#         ])
-#     emnist_data_transformed = \
-#         torch.cat([
-#             emnist_transform_train.data,
-#             emnist_transform_test.data
-#         ])
-#
-#     emnist_targets = \
-#         torch.cat([
-#             emnist_train.targets,
-#             emnist_test.targets
-#         ])
-#     if dist_shift:
-#         with open('data/emnist_r/all_data/rotations.pkl', "rb") as f:
-#             rotation_idx = pickle.load(f)
-#             # x = emnist_data[rotation_idx]
-#             # y = emnist_targets[rotation_idx]
-#
-#             # x = torch.rot90(x, 2, [1, 2])
-#             # x = 1 - x
-#             # y = permute_label(y, 62)
-#             #
-#             # emnist_data[rotation_idx] = x
-#             # emnist_targets[rotation_idx] = y
-#
-#             # x_tranformed = d_transform(emnist_data_transformed)
-#             # print(x_tranformed.size())
-#
-#             x_trans = torch.utils.data.Subset(emnist_data_transformed, rotation_idx)
-#             emnist_data[rotation_idx] = x_trans[0]
-#             if dp:
-#                 with open('data/emnist_r/all_data/clients_permute.pkl', "rb") as f1:
-#                     with open('data/emnist_r/all_data/label_projection.pkl', "rb") as f2:
-#                         client_permutation = torch.LongTensor(pickle.load(f1))
-#                         label_projection = torch.LongTensor(pickle.load(f2))
-#
-#                         emnist_targets[client_permutation] = label_projection[emnist_targets[client_permutation]]
-#                         # emnist_data[rotation_idx] = x
-#                         # emnist_targets[rotation_idx] = y
-#             else:
-#                 with open('data/emnist_r/all_data/label_projection.pkl', "rb") as f2:
-#                     label_projection = torch.LongTensor(pickle.load(f2))
-#                     emnist_targets[rotation_idx] = label_projection[emnist_targets[rotation_idx]]
-#
-#
-#
-#             # gray_img = T.Grayscale()
-#             # jitter = T.ColorJitter(brightness=.5, hue=.3)
-#             # inverter = T.RandomInvert()
-#             # rotater = T.RandomRotation(degrees=(0, 180))
-#             # print(torch.sum(x_trans[0][0]))
-#
-#             # emnist_targets[rotation_idx] = label_projection[y_i]
-#             # for step, imgs in enumerate(x):
-#             #     imgs = gray_img(imgs)
-#             #     imgs = jitter(imgs)
-#             #     imgs = inverter(imgs)
-#             #     imgs = rotater(imgs)
-#             #     imgs = jitter(imgs)
-#             #     imgs = inverter(imgs)
-#             #     imgs = rotater(imgs)
-#             #     emnist_data[rotation_idx[step]] = imgs
-#         #
-#     return emnist_data, emnist_targets
 
 def get_emnist(dist_shift=False, dp=False):
     """
@@ -1147,9 +940,10 @@ def get_cifar10(dist_shift=False, dp=False, unseen=True):
         (0.4914, 0.4822, 0.4465),
         (0.2023, 0.1994, 0.2010)
     )
+    cifar10_data = cifar10_data.view(-1,3,32,32)
     if dist_shift:
         # cifar10_data = d_norm(cifar10_data)
-        cifar10_data = cifar10_data.view(-1,3,32,32)
+        
 
         with open('data/cifar10/all_data/rotations.pkl', "rb") as f:
 
@@ -1227,9 +1021,9 @@ def get_cifar100(dist_shift=False, dp=False, unseen=True):
         (0.2023, 0.1994, 0.2010)
     )
     a, b, c, d = cifar100_data.shape
-
+    cifar100_data = cifar100_data.view(a, d, b, c)
     if dist_shift:
-        cifar100_data = cifar100_data.view(a, d, b, c)
+        
 
 
         # cifar10_data = d_norm(cifar10_data)
